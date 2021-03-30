@@ -5,7 +5,7 @@ using System.Linq;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace ChaosTankServer.Network
+namespace ChaosTankServer.ServerNetwork
 {
     [Serializable]
     struct DataObj
@@ -14,9 +14,9 @@ namespace ChaosTankServer.Network
         public string str;
     }
 
-    public class Network
+    public class ServerNetwork
     {
-        public Network()
+        public ServerNetwork()
         {
             serverIP = new IPEndPoint(IPAddress.Any, 12345);
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);

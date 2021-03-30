@@ -2,8 +2,6 @@
 
 namespace ChaosTankServer
 {
-    using Network;
-
     class ServerMain
     {
 
@@ -11,7 +9,7 @@ namespace ChaosTankServer
         { 
             Console.WriteLine("Server On");
 
-            Network.Network network = new ChaosTankServer.Network.Network();
+            ServerNetwork.ServerNetwork network = new ChaosTankServer.ServerNetwork.ServerNetwork();
             network.BeginListen();
         }
 
