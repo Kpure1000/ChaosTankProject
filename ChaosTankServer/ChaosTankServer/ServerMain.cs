@@ -1,4 +1,5 @@
 ﻿using System;
+using ChaosTankServer.ServerNetwork;
 
 namespace ChaosTankServer
 {
@@ -9,8 +10,11 @@ namespace ChaosTankServer
         { 
             Console.WriteLine("Server On");
 
-            ServerNetwork.ServerNetwork network = new ChaosTankServer.ServerNetwork.ServerNetwork();
-            network.BeginListen();
+            //ServerNetwork.ServerNetwork network = new ChaosTankServer.ServerNetwork.ServerNetwork();
+            //network.BeginListen();
+
+            TestClient testClient = new TestClient();
+
         }
 
     }
