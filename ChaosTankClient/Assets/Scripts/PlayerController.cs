@@ -16,15 +16,13 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        xInput = logicInputer.dataCache.xInput * 0.001f;
-        yInput = logicInputer.dataCache.yInput * 0.001f;
+        xInput = LogicInputer.instance.dataCache.xInput * 0.001f;
+        yInput = LogicInputer.instance.dataCache.yInput * 0.001f;
 
         runAngle += -xInput * RotateSpeed;
         transform.Rotate(0, 0, -RotateSpeed * RadToAngle * xInput);
 
     }
-
-    private LogicInputer logicInputer = new LogicInputer();
 
     private float xInput;
     private float yInput;

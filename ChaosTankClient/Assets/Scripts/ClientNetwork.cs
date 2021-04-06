@@ -2,6 +2,9 @@
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
+using UnityEngine;
+using System.Text;
+
 public class ClientNetwork
 {
 
@@ -13,16 +16,26 @@ public class ClientNetwork
         });
         onListeningStop = new OnListeningStop((IPEndPoint IPEP) =>
           {
+              Debug.LogWarning(string.Format(
+                  "Client network STOP lisetning, info: {0}:{1}.", IPEP.Address, IPEP.Port
+                  ));
           });
+    }
+
+    public void Init(ServerInfo serverInfoIn)
+    {
+        serverInfo = serverInfoIn;
+        Debug.Log(string.Format("Server Info: {0}:{1}", serverInfo.address, serverInfo.port));
 
         try
         {
-            udpClient = new UdpClient(12345);
-            // TODO ?
+            udpClient = new UdpClient("127.0.0.1", 12345);
+            Debug.Log(string.Format("Open Udp Client."));
         }
         catch (SocketException ex)
         {
             // TODO exception
+            Debug.LogException(ex);
         }
     }
 
@@ -42,29 +55,44 @@ public class ClientNetwork
         }
     }
 
+    public void SendLogic(LogicData dataOut)
+    {
+        try
+        {
+            var sendBt = Util.JsonTool.ObjectToJsonByte(dataOut);
+            udpClient.Send(sendBt, sendBt.Length);
+            //Debug.Log("发送成功");
+        }
+        catch (SocketException ex)
+        {
+            Debug.LogException(ex);
+        }
+    }
+
     public void BeginListening()
     {
         IPEndPoint remoteIPEP = new IPEndPoint(IPAddress.Any, 0);
 
         new Thread(() =>
-       {
-           while (true)
-           {
-               // Block to receive
-               //byte[] receiveBytes = udpClient.Receive(ref remoteIPEP);
+        {
+            Debug.Log(string.Format("BeginListening"));
+            while (true)
+            {
+                // Block to receive
+                byte[] receiveBytes = udpClient.Receive(ref remoteIPEP);
 
-               LogicData dataIn = new LogicData();
-               dataIn.xInput = 1;
+                var jsonStr = Encoding.UTF8.GetString(receiveBytes);
+                Debug.Log("receive>>   " + jsonStr);
 
-               if (onReceiveInput(dataIn))
-               {
-                   onListeningStop(remoteIPEP);
-                   break;
-               }
+                LogicData dataIn = Util.JsonTool.JsonStrToObject<LogicData>(jsonStr);
 
-               Thread.Sleep(32);
-           }
-       }).Start();
+                if (onReceiveInput(dataIn))
+                {
+                    onListeningStop(remoteIPEP);
+                    break;
+                }
+            }
+        }).Start();
 
     }
 
@@ -90,5 +118,6 @@ public class ClientNetwork
     private OnListeningStop onListeningStop;
 
     private UdpClient udpClient;
+    private ServerInfo serverInfo;
 
 }

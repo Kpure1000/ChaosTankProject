@@ -3,13 +3,26 @@ using UnityEngine;
 
 public struct LogicData
 {
+    public int id;
     public int xInput;
     public int yInput;
 }
 
 public class LogicInputer
 {
-    public LogicInputer()
+    public static LogicInputer instance
+    {
+        get
+        {
+            return m_LazyInstance.Value;
+        }
+    }
+
+    private LogicInputer()
+    {
+    }
+
+    public void Init()
     {
         ClientNetwork.instance.AddListeningCallBack((LogicData dataIn) =>
         {
@@ -25,6 +38,8 @@ public class LogicInputer
         get { return m_DataCache; }
     }
 
-    private LogicData m_DataCache = new LogicData();
+    private static LogicData m_DataCache = new LogicData();
+
+    private static readonly Lazy<LogicInputer> m_LazyInstance = new Lazy<LogicInputer>(() => new LogicInputer());
 
 }
