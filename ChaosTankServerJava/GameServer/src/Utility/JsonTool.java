@@ -15,4 +15,12 @@ public class JsonTool {
         return JSON.parseObject(ByteToString(bytes), tClass);
     }
 
+    static public <T> String ObjectToJsonStr(T obj) {
+        return JSON.toJSONString(obj);
+    }
+
+    static public <T> byte[] ObjectToJsonByte(T obj) {
+        return ObjectToJsonStr(obj).getBytes();
+    }
+
 }

@@ -1,6 +1,7 @@
 package Network;
 
 import Utility.Debug;
+import Utility.JsonTool;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -19,6 +20,20 @@ public class ServerNetwork {
 
     public void AddCallBack(NetworkCallBack networkCallBack) {
         networkCallBacks.add(networkCallBack);
+    }
+
+    public <T> void Send(DatagramPacket datagramPacket, T obj) {
+        var byteOut = JsonTool.ObjectToJsonByte(obj);
+        byte[] byteFormat = new byte[1024];
+        for (int i = 0; i < 1024 && i < byteOut.length; i++) byteFormat[i] = byteOut[i];
+        DatagramPacket packetOut = new DatagramPacket(byteFormat, 0, byteFormat.length);
+        packetOut.setAddress(datagramPacket.getAddress());
+        packetOut.setPort(datagramPacket.getPort());
+        try {
+            m_DatagramSocket.send(packetOut);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void Start(int port) {

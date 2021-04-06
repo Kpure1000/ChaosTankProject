@@ -4,10 +4,11 @@ import java.io.Serializable;
 
 public class TestData implements Serializable {
     public int id;
-    public String str;
+    public int xInput;
+    public int yInput;
 
     @Override
     public String toString() {
-        return String.format("id: %d -> content: %s", id, str);
+        return String.format("id: %d -> content: (%f, %f)", id, xInput, yInput);
     }
 }

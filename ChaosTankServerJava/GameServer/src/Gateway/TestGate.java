@@ -25,8 +25,9 @@ public class TestGate {
 //                    TestData data = JsonTool.Parse(datagramPacket.getData(), TestData.class);
 //                    Debug.Log(">>Client " + datagramPacket.getAddress() + ":" +
 //                            datagramPacket.getPort() + " :" + data);
-                    Debug.Log(">>C" + JsonTool.ByteToString(datagramPacket.getData()));
-
+                    var jsonStr = JsonTool.ByteToString(datagramPacket.getData());
+                    Debug.Log(">>Client: " + jsonStr);
+                    ServerNetwork.getInstance().Send(datagramPacket, JsonTool.Parse(jsonStr.getBytes(), TestData.class));
                 } catch (UnsupportedEncodingException e) {
                     Debug.LogWarning("Encode Unsupported, info: " + e.getMessage());
 //                    e.printStackTrace();
@@ -41,6 +42,8 @@ public class TestGate {
         });
 
         ServerNetwork.getInstance().Start(12345);
+
+        ServerNetwork.getInstance().Close();
 
     }
 
