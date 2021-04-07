@@ -9,7 +9,7 @@ public class SystemInputer : MonoBehaviour
 
     void Start()
     {
-        tmpLogicData = new LogicData();
+        logicInputSending = new LogicData();
     }
 
     void Update()
@@ -21,15 +21,15 @@ public class SystemInputer : MonoBehaviour
             currentTime = 0.0f;
 
             // get input
-            tmpLogicData.xInput = (int)(1000.0f * Input.GetAxisRaw("Horizontal"));
-            tmpLogicData.yInput = (int)(1000.0f * Input.GetAxisRaw("Vertical"));
+            logicInputSending.xInput = (int)(1000.0f * Input.GetAxisRaw("Horizontal"));
+            logicInputSending.yInput = (int)(1000.0f * Input.GetAxisRaw("Vertical"));
 
             // TODO send input to server
-            ClientNetwork.instance.SendLogic(tmpLogicData);
+            ClientNetwork.instance.SendLogic(logicInputSending);
         }
     }
 
     private float currentTime = 0.0f;
 
-    private LogicData tmpLogicData;
+    private LogicData logicInputSending;
 }

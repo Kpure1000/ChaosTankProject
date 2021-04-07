@@ -3,7 +3,9 @@ using UnityEngine;
 
 public struct LogicData
 {
-    public int id;
+    public int fid;
+
+    public int uid;
     public int xInput;
     public int yInput;
 }

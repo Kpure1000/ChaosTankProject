@@ -22,6 +22,11 @@ public class PlayerController : MonoBehaviour
         runAngle += -xInput * RotateSpeed;
         transform.Rotate(0, 0, -RotateSpeed * RadToAngle * xInput);
 
+        runDirection.x = Mathf.Cos(runAngle);
+        runDirection.y = Mathf.Sin(runAngle);
+        runVelocity = yInput * MoveSpeed * runDirection;
+
+        rb2d.velocity = runVelocity;
     }
 
     private float xInput;
@@ -32,7 +37,9 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb2d;
 
-    private float runAngle;
+    private float runAngle = Rad90;
+    private Vector2 runDirection;
+    private Vector2 runVelocity;
 
     private const float RadToAngle = 180 / Mathf.PI;
     private const float Rad90 = Mathf.PI / 2f; 

@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def1ef4aae128294e9b3e4b6bf7fda2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputInternalTime: 0.032
+  InputInternalTime: 0.066
 --- !u!114 &247198173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,7 +250,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1776954399
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 6168433181435801745, guid: 7a2ee4ae4641d4a978371ae4b217555d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2920,7 +2920,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &1675467618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2933,7 +2933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bcd7d04044454ce4add19c02a19826a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 0.1
+  MoveSpeed: 7
   RotateSpeed: 0.1
 --- !u!1 &1687258581
 GameObject:
@@ -2947,6 +2947,8 @@ GameObject:
   - component: {fileID: 1687258584}
   - component: {fileID: 1687258582}
   - component: {fileID: 1687258586}
+  - component: {fileID: 1687258587}
+  - component: {fileID: 1687258583}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2962,6 +2964,20 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687258581}
   m_Enabled: 1
+--- !u!114 &1687258583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687258581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70e807af13ad84319b711bdcc7202e87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1675467618}
+  smoothTime: 0.07
 --- !u!20 &1687258584
 Camera:
   m_ObjectHideFlags: 0
@@ -3051,6 +3067,27 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!50 &1687258587
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687258581}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &2023441442
 GameObject:
   m_ObjectHideFlags: 0
@@ -3124,7 +3161,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1050466301
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
