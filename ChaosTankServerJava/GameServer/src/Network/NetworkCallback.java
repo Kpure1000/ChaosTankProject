@@ -3,10 +3,10 @@ package Network;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-public interface NetworkCallBack {
+public interface NetworkCallback {
     void OnBeginListening(DatagramSocket datagramSocket);
 
-    boolean OnReceivePackage(DatagramPacket datagramPacket);
+    boolean OnReceivePackage(DatagramPacket sourcePacket);
 
     void OnCloseNetwork(DatagramSocket datagramSocket);
 }

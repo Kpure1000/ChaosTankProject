@@ -1,31 +1,29 @@
 package Network;
 
 import Utility.Debug;
-import Utility.JsonTool;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.Socket;
 import java.net.SocketException;
-import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ServerNetwork {
 
     private ServerNetwork() {
         isOn = true;
-        networkCallBacks = new CopyOnWriteArrayList<>();
+        networkCallbacks = new CopyOnWriteArrayList<>();
     }
 
-    public void AddCallBack(NetworkCallBack networkCallBack) {
-        networkCallBacks.add(networkCallBack);
+    public void AddCallback(NetworkCallback networkCallBack) {
+        networkCallbacks.add(networkCallBack);
     }
 
-    public <T> void Send(DatagramPacket datagramPacket, T obj) {
-        var byteOut = JsonTool.ObjectToJsonByte(obj);
-        byte[] byteFormat = new byte[1024];
-        for (int i = 0; i < 1024 && i < byteOut.length; i++) byteFormat[i] = byteOut[i];
+    public <T> void Send(DatagramPacket datagramPacket, byte[] byteOut) {
+        int maxLength = (byteOut.length / 1024 + 1) * 1024;
+        byte[] byteFormat = new byte[maxLength];
+
+        for (int i = 0, len = byteOut.length; i < len; i++) byteFormat[i] = byteOut[i];
         DatagramPacket packetOut = new DatagramPacket(byteFormat, 0, byteFormat.length);
         packetOut.setAddress(datagramPacket.getAddress());
         packetOut.setPort(datagramPacket.getPort());
@@ -45,7 +43,7 @@ public class ServerNetwork {
 //            e.printStackTrace();
         }
         for (var item :
-                networkCallBacks) {
+                networkCallbacks) {
             item.OnBeginListening(m_DatagramSocket);
         }
 
@@ -57,8 +55,8 @@ public class ServerNetwork {
                 m_DatagramSocket.receive(receiveP);
 
                 for (var item :
-                        networkCallBacks) {
-                    if (!item.OnReceivePackage(receiveP)) {
+                        networkCallbacks) {
+                    if (item.OnReceivePackage(receiveP)) {
                         isOn = false;
                         break;
                     }
@@ -71,7 +69,7 @@ public class ServerNetwork {
         }
 
         for (var item :
-                networkCallBacks) {
+                networkCallbacks) {
             item.OnCloseNetwork(m_DatagramSocket);
         }
 
@@ -80,7 +78,7 @@ public class ServerNetwork {
     public void Close() {
         m_DatagramSocket.close();
         for (var item :
-                networkCallBacks) {
+                networkCallbacks) {
             item.OnCloseNetwork(m_DatagramSocket);
         }
     }
@@ -93,7 +91,7 @@ public class ServerNetwork {
 
     private boolean isOn;
 
-    private CopyOnWriteArrayList<NetworkCallBack> networkCallBacks;
+    private CopyOnWriteArrayList<NetworkCallback> networkCallbacks;
 
     private static ServerNetwork instance;
 

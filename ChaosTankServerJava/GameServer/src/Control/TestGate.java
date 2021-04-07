@@ -1,10 +1,10 @@
-package Gateway;
+package Control;
 
-import Network.NetworkCallBack;
+import Network.NetworkCallback;
 import Network.ServerNetwork;
 import Utility.Debug;
-import Utility.JsonTool;
-import Module.TestData;
+import Utility.DataTranser;
+import Module.PlayerOperation;
 
 import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
@@ -13,26 +13,28 @@ import java.net.DatagramSocket;
 public class TestGate {
 
     public TestGate() {
-        ServerNetwork.getInstance().AddCallBack(new NetworkCallBack() {
+        ServerNetwork.getInstance().AddCallback(new NetworkCallback() {
             @Override
             public void OnBeginListening(DatagramSocket datagramSocket) {
                 Debug.Log("*** Gateway Server On ***");
             }
 
             @Override
-            public boolean OnReceivePackage(DatagramPacket datagramPacket) {
+            public boolean OnReceivePackage(DatagramPacket sourcePacket) {
                 try {
-//                    TestData data = JsonTool.Parse(datagramPacket.getData(), TestData.class);
-//                    Debug.Log(">>Client " + datagramPacket.getAddress() + ":" +
-//                            datagramPacket.getPort() + " :" + data);
-                    var jsonStr = JsonTool.ByteToString(datagramPacket.getData());
-                    Debug.Log(">>Client: " + jsonStr);
-                    ServerNetwork.getInstance().Send(datagramPacket, JsonTool.Parse(jsonStr.getBytes(), TestData.class));
+                    //  Get object of input data
+                    PlayerOperation dataIn = DataTranser.ByteToObject(sourcePacket.getData(), PlayerOperation.class);
+
+                    //  TODO
+
+                    //  Send to every client
+                    ServerNetwork.getInstance().Send(sourcePacket, DataTranser.ObjectToJsonByte(dataIn));
+
                 } catch (UnsupportedEncodingException e) {
                     Debug.LogWarning("Encode Unsupported, info: " + e.getMessage());
 //                    e.printStackTrace();
                 }
-                return true;
+                return false;
             }
 
             @Override
